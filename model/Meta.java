@@ -1,3 +1,5 @@
+package model;
+
 public class Meta {
     private String descricao;
     private double valorAlvo;

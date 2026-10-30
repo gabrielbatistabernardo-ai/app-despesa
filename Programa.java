@@ -1,3 +1,10 @@
+import model.Conta;
+import model.Receita;
+import model.Meta;
+import model.Despesa;
+
+
+
 import java.util.Scanner;
 
 public class Programa {

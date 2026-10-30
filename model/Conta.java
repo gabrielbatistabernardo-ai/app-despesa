@@ -1,3 +1,5 @@
+package model;
+
 public class Conta {
     private String titular;
     private double saldo;
@@ -23,7 +25,7 @@ public class Conta {
         return saldo;
     }
 
-    // setSaldo() removido para proteger o saldo contra alteracao direta
+    // setSaldo() mantido removido para garantir o encapsulamento
 
     public double getLimite() {
         return limite;
@@ -33,7 +35,8 @@ public class Conta {
         this.limite = limite;
     }
 
-    // Métodos da Fase 2
+    // --- MÉTODOS DE NEGÓCIO ---
+
     public void depositar(double valor) {
         if (valor > 0) {
             this.saldo += valor;
@@ -44,7 +47,12 @@ public class Conta {
     }
 
     public boolean sacar(double valor) {
-        if (this.saldo + this.limite >= valor) {
+        if (valor <= 0) {
+            System.out.println("Valor de saque invalido.");
+            return false;
+        }
+        
+        if ((this.saldo + this.limite) >= valor) {
             this.saldo -= valor;
             System.out.println("Saque de R$ " + valor + " realizado com sucesso na conta de " + titular);
             return true;
@@ -55,10 +63,16 @@ public class Conta {
     }
 
     public boolean pagarDespesa(Despesa despesa) {
+        if (despesa == null) {
+            System.out.println("Erro: Despesa invalida.");
+            return false;
+        }
+
         if (despesa.isPaga()) {
             System.out.println("Despesa '" + despesa.getDescricao() + "' ja esta paga.");
             return false;
         }
+
         if (sacar(despesa.getValor())) {
             despesa.setPaga(true);
             System.out.println("Despesa '" + despesa.getDescricao() + "' paga com sucesso!");
@@ -70,12 +84,17 @@ public class Conta {
     }
 
     public boolean poupar(Meta meta, double valor) {
+        if (meta == null) {
+            System.out.println("Erro: Meta invalida.");
+            return false;
+        }
+
         if (sacar(valor)) {
             meta.adicionarValor(valor);
             System.out.println("R$ " + valor + " guardados na meta: " + meta.getDescricao());
             return true;
         } else {
-            System.out.println("Erro: Saldo insuficiente para poupar R$ " + valor);
+            System.out.println("Erro: Saldo e limite insuficientes para poupar R$ " + valor);
             return false;
         }
     }

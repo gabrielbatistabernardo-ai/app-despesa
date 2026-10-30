@@ -1,3 +1,5 @@
+package model;
+
 public class Despesa {
     private String descricao;
     private double valor;
